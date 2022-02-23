@@ -1,4 +1,6 @@
 # Python-controlled-Braccio-robot-arm
+Video which shows the results of the code:
+https://www.youtube.com/watch?v=6IKAJicbArA&lc=Ugzex5Dh8qywKkJ2u4l4AaABAg&ab_channel=NatanNaert
 
 1. Upload the arduino code on the arduino board.
 2. Unplug the Arduino board and close the arduino IDE.
