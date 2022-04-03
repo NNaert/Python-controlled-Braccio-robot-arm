@@ -29,7 +29,7 @@ arm.write(b'H0,90,20,90,90,73,20\n')  #home the arm at low speeds
 time.sleep(2)
 
 
-# %%
+
 def write_arduino(angles):
     
     angles[0]=180-angles[0]  #invert degrees for base
@@ -39,7 +39,7 @@ def write_arduino(angles):
     arm.write(angle_string.encode())          #.encode encodes the string to bytes
             
     
-# %%
+
 def rotate_joint(joint):  #rotate a specifi joint to the outer limits of the joint angles
 
     def calculate_joint(joint,number):
@@ -59,7 +59,7 @@ def rotate_joint(joint):  #rotate a specifi joint to the outer limits of the joi
 def home(speed=20):
     angle_string_def_angles=[base[0],shoulder[0],elbow[0],wrist[0],wristRot[0],gripper[0]]
     write_arduino(angle_string_def_angles)
-# %%
+
 def rotate_all_joints():
     print("The base.")
     rotate_joint(base)
@@ -73,7 +73,7 @@ def rotate_all_joints():
     rotate_joint(wristRot)
     print("The gripper.")
     rotate_joint(gripper)
-# %%    
+  
 def write_position(theta_base=base[0],theta_shoulder=shoulder[0],theta_elbow=elbow[0],theta_wrist=wrist[0],theta_wristRot=wristRot[0],grip="closed"):
     
     if grip=="closed":
@@ -137,7 +137,7 @@ def close_gripper():
     
     
 def pick_up(x,y):
-    glass_pos=[300,100] #x,y pos of glass
+    glass_pos=[310,95] #x,y pos of glass
     delay=1  #delay between steps
     pick_up_heigth=10  #heigth of the object
     home()
@@ -146,6 +146,7 @@ def pick_up(x,y):
     time.sleep(delay)
     open_gripper()
     time.sleep(delay)
+    print('pick-up foam')
     go_to_coordinate(x,y,pick_up_heigth-20,"open")
     time.sleep(delay)
     close_gripper()
@@ -166,6 +167,24 @@ def backlash():
     write_position(45,0,90,90)
     time.sleep(2)
     write_position(90,0,90,90)
+
+# %%
+def camera_compensation(x_coordinate,y_coordinate):
+    h_foam=80  #fam heigth of 80mm
+    camera_position=[480,150,880]  #x,y,z coordinate from origin in mm
+    #add 300 to move orgin to under the camera
+    offset=300
+    x_coordinate=(offset-x_coordinate)+(camera_position[0]-offset)
     
+    #perform compensation
+    x_compensated=x_coordinate-(h_foam/(camera_position[2]/x_coordinate))
+    if y_coordinate<camera_position[1]:
+        y_compensated=y_coordinate-(h_foam/(camera_position[2]/y_coordinate))
+    else:
+        y_compensated=y_coordinate+(h_foam/(camera_position[2]/y_coordinate))
+    #substract the offset
+    x_compensated=offset-(x_compensated-(camera_position[0]-offset))
+    
+    return int(x_compensated),int(y_compensated)
     
 # %%

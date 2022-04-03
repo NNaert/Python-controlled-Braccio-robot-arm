@@ -51,7 +51,7 @@ def move_to_position_cart(x,y,z):
     #adjust shoulder angle to increase heigth
     if z!=l0:
         theta_shoulder=theta_shoulder+degrees(atan(((z-l0)/r)))
-        print(degrees(atan(((z-l0)/r))))
+        #print(degrees(atan(((z-l0)/r))))
     
     #add compensation for bad line-up of servo with mount
     theta_elbow=theta_elbow+5  
@@ -77,13 +77,13 @@ def backlash_compensation_base(theta_base):
     theta_base=round(theta_base)
     theta_base_comp=theta_base
     
-    compensation_value_CW=6  #degrees (CW roation)
-    compensation_value_CCW=np.linspace(0, 12,135)
+    compensation_value_CW=8  #degrees (CW roation)
+    compensation_value_CCW=np.linspace(0, 14,135)
     prev_angles=get_previous_teta2()  #get previous theta's from txt file
     theta_base_prev=prev_angles[0]
     
     delta_theta_base=theta_base-theta_base_prev
-    print(delta_theta_base)
+    # print(delta_theta_base)
     if delta_theta_base>1:
         if theta_base<=45:
             theta_base_comp=theta_base
@@ -91,10 +91,10 @@ def backlash_compensation_base(theta_base):
             index=int(round(theta_base-46))
             theta_base_comp=theta_base+compensation_value_CCW[index]
             theta_base_comp=round(theta_base_comp)
-            print("base theta compensated CCW, val: "+str(round(compensation_value_CCW[theta_base-46])))
+            # print("base theta compensated CCW, val: "+str(round(compensation_value_CCW[theta_base-46])))
     if delta_theta_base<-1:
         theta_base_comp=theta_base-compensation_value_CW
-        print("base theta compensated CW, val: "+str(compensation_value_CW))
+        # print("base theta compensated CW, val: "+str(compensation_value_CW))
 
         
     return theta_base_comp
