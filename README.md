@@ -11,4 +11,5 @@ https://www.youtube.com/watch?v=SUgCcF-lWCI&ab_channel=NatanNaert
 7. Use the different definitions to control the arm.
 
 Note1: that the code could not work on your arm due to the different ways to assemble the arm! The code is written for the arm I use.
+
 Note2: Some definitions are copied from Git. I am thus NOT the only author of the code. 
